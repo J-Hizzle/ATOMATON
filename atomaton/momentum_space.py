@@ -21,3 +21,5 @@ def radial_function(n, l, Z, y_grid):
     Z_vals = N * C_vals * P_vals
 
     return Z_vals
+# %%
+def momental(n, l, m, Z, )
