@@ -35,6 +35,18 @@ def calc_radial_position_function(n_val, l_val, Z_val, r_grid):
 
     return radial_dist(r_grid)
 #%%
+def calc_radial_distribution_function(n_val, l_val, Z_val, r_grid):
+    '''
+    Construct and evaluate momentum distribution function.
+    '''
+    # subsitute parameters into sympy expression
+    P_nl = P.subs([(n, n_val), (l, l_val), (Z, Z_val)])
+
+    # lambdify sympy expression
+    P_func = smp.lambdify(r, P_nl)
+
+    return P_func(r_grid)**2
+# %%
 def calc_r_k_expval(n_val, l_val, Z_val, k_val):
     '''
     Compute expectation value of r^k as integral

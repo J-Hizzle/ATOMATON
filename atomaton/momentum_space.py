@@ -40,6 +40,19 @@ def calc_real_radial_momentum_function(n_val, l_val, Z_val, p_grid):
 
     return radial_mom(p_grid)
 # %%
+def calc_momentum_distribution_function(n_val, l_val, Z_val, p_grid):
+    '''
+    Construct and evaluate momentum distribution function.
+    '''
+    # subsitute parameters into sympy expression
+    G_nl = G.subs([(n, n_val), (l, l_val), (Z, Z_val)])
+
+    # lambdify sympy expression
+    G_func = smp.lambdify(p, G_nl)
+
+    return G_func(p_grid)**2
+
+# %%
 def calc_p_k_expval(n_val, l_val, Z_val, k_val):
     '''
     Compute expectation value of p^k as integral

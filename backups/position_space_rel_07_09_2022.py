@@ -20,7 +20,7 @@ C_P = smp.sqrt(1 + (n_r + gamma)/N)                                 # prefactor 
 C_Q = smp.sqrt(1 - (n_r + gamma)/N)                                 # prefactor of small component
 norm_lag = smp.sqrt(Z * smp.factorial(n_r)/(2 * N**2 * (N - kappa) * smp.gamma(2 * gamma + n_r + 1)))   # normalization constant
 norm_hyp = smp.sqrt(Z * smp.factorial(n_r + 2 * gamma)/(2 * N**2 * (N - kappa) * smp.factorial(2 * gamma)**2 * smp.factorial(n_r)))
-x = 2 * Z/N * r                                                     # rescaled radial variable
+x = 2 * Z/N * r                                                  # rescaled radial variable
 
 # define radial functions P and Q in Andrae's representation with Laguerre polynomials as a function of the radius r in atomic units
 P_lag = norm_lag * C_P * x**gamma * smp.exp(-x/2) * ((N - kappa) * smp.assoc_laguerre(n_r, 2 * gamma, x) - n_r * smp.assoc_laguerre(n_r - 1, 2 * gamma, x))
@@ -29,6 +29,7 @@ Q_lag = -norm_lag * C_Q * x**gamma * smp.exp(-x/2) * ((N - kappa) * smp.assoc_la
 # define special case for n_r = 0
 P_lag_0 = norm_lag * C_P * x**gamma * smp.exp(-x/2) * (N - kappa) * smp.assoc_laguerre(n_r, 2 * gamma, x)
 Q_lag_0 = -norm_lag * C_Q * x**gamma * smp.exp(-x/2) * (N - kappa) * smp.assoc_laguerre(n_r, 2 * gamma, x)
+
 
 # define radial functions P and Q in Andrae's representation with confluent hypergeometric functions as a function of the radius r in atomic units
 P_hyp = norm_hyp * C_P * x**gamma * smp.exp(-x/2) * ((N - kappa) * smp.hyper([-n_r], [2 * gamma + 1], x) - n_r * smp.hyper([-n_r + 1], [2 * gamma + 1], x))
@@ -73,21 +74,6 @@ def calc_radial_position_function_rel(n_val, kappa_val, Z_val, r_grid, alpha_val
 
     return P_func(r_grid), Q_func(r_grid)
 #%%
-def calc_radial_distribution_function_rel(n_val, kappa_val, Z_val, r_grid, alpha_val=1/137.035999037):
-    P_nl = P_hyp.subs([(n, n_val), (kappa, kappa_val), (Z, Z_val), (alpha, alpha_val)])
-    Q_nl = Q_hyp.subs([(n, n_val), (kappa, kappa_val), (Z, Z_val), (alpha, alpha_val)])
-    
-    P_nl = smp.simplify(P_nl)
-    Q_nl = smp.simplify(Q_nl)
-    
-    # lambdify sympy expression
-    P_func = smp.lambdify(r, P_nl)
-    Q_func = smp.lambdify(r, Q_nl)
-
-    dist_func = P_func(r_grid)**2 + Q_func(r_grid)**2
-
-    return dist_func
-# %%
 #def calc_r_k_expval(n_val, l_val, Z_val, k_val):
     '''
     Compute expectation value of r^k as integral
