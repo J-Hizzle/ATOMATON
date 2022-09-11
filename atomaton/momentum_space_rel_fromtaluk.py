@@ -24,16 +24,16 @@ n_r = n - smp.Abs(kappa)                                            # radial qua
 N = smp.sqrt(n_r**2 + 2 * n_r * gamma + kappa**2)                   # apparent principal quantum number
 C_plus = smp.sqrt(1 + (n_r + gamma)/N)                              # prefactor of large component
 C_minus = smp.sqrt(1 - (n_r + gamma)/N)                             # prefactor of small component
-M_norm_plus = smp.I**l * 2**(gamma - l - 1)/smp.gamma(l + 3/2) * smp.sqrt((smp.gamma(n_r + 2 * gamma + 1)))/(Z * (N - kappa) * smp.gamma(2 * gamma + 1)**2 * smp.factorial(n_r))                     # normalization constant for the upper component
-M_norm_minus = smp.I**l_prime * 2**(gamma - l_prime - 1)/smp.gamma(l_prime + 3/2) * smp.sqrt((smp.gamma(n_r + 2 * gamma + 1))/(Z * (N - kappa) * smp.gamma(2 * gamma + 1)**2 * smp.factorial(n_r)))  # normalization constant for the lower component
+M_norm_plus = smp.I**(-l) * 2**(gamma - l - 1)/smp.gamma(l + 3/2) * smp.sqrt((smp.gamma(n_r + 2 * gamma + 1)))/(Z * (N - kappa) * smp.gamma(2 * gamma + 1)**2 * smp.factorial(n_r)) * (N/Z)**(2 * l + 1) * alpha**(gamma + 1/2)                  # normalization constant for the upper component
+M_norm_minus = smp.I**(-l_prime) * 2**(gamma - l_prime - 1)/smp.gamma(l_prime + 3/2) * smp.sqrt((smp.gamma(n_r + 2 * gamma + 1))/(Z * (N - kappa) * smp.gamma(2 * gamma + 1)**2 * smp.factorial(n_r))) * (N/Z)**(2 * l_prime + 1) * alpha**(gamma + 1/2)  # normalization constant for the lower component
 y = N/Z * p                                                         # rescaled momentum variable
 
 # define subfunctions contained in radial momentum functions
-S_1_plus = smp.gamma(l + gamma + k + 2) * smp.rf(-n_r, kappa)/smp.rf(2 * gamma + 1, k) * 2**k/smp.factorial(k) * y**(l + 1)/(y**2 + 1)**(1/2 * (l + gamma + k + 2)) * smp.hyper([(l + gamma + k + 2)/2, (l - gamma - k)/2], [(2 * l + 3)/2], y**2/(y**2 + 1))  
-S_2_plus = smp.gamma(l + gamma + k + 2) * smp.rf(-n_r + 1, kappa)/smp.rf(2 * gamma + 1, k) * 2**k/smp.factorial(k) * y**(l + 1)/(y**2 + 1)**(1/2 * (l + gamma + k + 2)) * smp.hyper([(l + gamma + k + 2)/2, (l - gamma - k)/2], [(2 * l + 3)/2], y**2/(y**2 + 1))  
+S_1_plus = smp.gamma(l + gamma + k + 2) * smp.rf(-n_r, kappa)/smp.rf(2 * gamma + 1, k) * (2 * alpha)**k/smp.factorial(k) * y**(l + 1)/(y**2 + alpha**2)**(1/2 * (l + gamma + k + 2)) * smp.hyper([(l + gamma + k + 2)/2, (l - gamma - k)/2], [(2 * l + 3)/2], y**2/(y**2 + alpha**2))  
+S_2_plus = smp.gamma(l + gamma + k + 2) * smp.rf(-n_r + 1, kappa)/smp.rf(2 * gamma + 1, k) * (2 * alpha)**k/smp.factorial(k) * y**(l + 1)/(y**2 + alpha**2)**(1/2 * (l + gamma + k + 2)) * smp.hyper([(l + gamma + k + 2)/2, (l - gamma - k)/2], [(2 * l + 3)/2], y**2/(y**2 + alpha**2))  
 
-S_1_minus = smp.gamma(l_prime + gamma + k + 2) * smp.rf(-n_r, kappa)/smp.rf(2 * gamma + 1, k) * 2**k/smp.factorial(k) * y**(l_prime + 1)/(y**2 + 1)**(1/2 * (l_prime + gamma + k + 2)) * smp.hyper([(l_prime + gamma + k + 2)/2, (l_prime - gamma - k)/2], [(2 * l_prime + 3)/2], y**2/(y**2 + 1))  
-S_2_minus = smp.gamma(l_prime + gamma + k + 2) * smp.rf(-n_r + 1, kappa)/smp.rf(2 * gamma + 1, k) * 2**k/smp.factorial(k) * y**(l_prime + 1)/(y**2 + 1)**(1/2 * (l_prime + gamma + k + 2)) * smp.hyper([(l_prime + gamma + k + 2)/2, (l_prime - gamma - k)/2], [(2 * l_prime + 3)/2], y**2/(y**2 + 1))  
+S_1_minus = smp.gamma(l_prime + gamma + k + 2) * smp.rf(-n_r, kappa)/smp.rf(2 * gamma + 1, k) * (2 * alpha)**k/smp.factorial(k) * y**(l_prime + 1)/(y**2 + alpha**2)**(1/2 * (l_prime + gamma + k + 2)) * smp.hyper([(l_prime + gamma + k + 2)/2, (l_prime - gamma - k)/2], [(2 * l_prime + 3)/2], y**2/(y**2 + alpha**2))  
+S_2_minus = smp.gamma(l_prime + gamma + k + 2) * smp.rf(-n_r + 1, kappa)/smp.rf(2 * gamma + 1, k) * (2 * alpha)**k/smp.factorial(k) * y**(l_prime + 1)/(y**2 + alpha**2)**(1/2 * (l_prime + gamma + k + 2)) * smp.hyper([(l_prime + gamma + k + 2)/2, (l_prime - gamma - k)/2], [(2 * l_prime + 3)/2], y**2/(y**2 + alpha**2))  
 # %%
 G_1_plus = smp.summation(S_1_plus, (k, 0, n_r))
 G_2_plus = smp.summation(S_2_plus, (k, 0, n_r - 1))
