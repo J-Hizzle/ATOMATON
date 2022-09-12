@@ -41,8 +41,11 @@ G_1_minus = smp.summation(S_1_minus, (k, 0, n_r))
 G_2_minus = smp.summation(S_2_minus, (k, 0, n_r - 1))
 
 # define radial momentum functions G and H obtained from Fourier transformation of position space spinor
-G_rel = M_norm_plus * C_plus * ((N - kappa) * G_1_plus - n_r * G_2_plus)
-H_rel = -M_norm_minus * C_minus * ((N - kappa) * G_1_minus + n_r * G_2_minus)
+G = M_norm_plus * C_plus * ((N - kappa) * G_1_plus - n_r * G_2_plus)
+H = -M_norm_minus * C_minus * ((N - kappa) * G_1_minus + n_r * G_2_minus)
+
+G_alt = M_norm_plus * C_plus * (N - kappa) * G_1_plus
+H_alt = M_norm_minus * C_minus * (N - kappa) * G_1_minus
 # %%
 def calc_momentum_distribution_function_rel(n_val, kappa_val, Z_val, p_grid, alpha_val=1/137.035999037):
     '''
@@ -61,7 +64,7 @@ def calc_momentum_distribution_function_rel(n_val, kappa_val, Z_val, p_grid, alp
 
     #dist = G_nk * smp.conjugate(G_nk) + H_nk * smp.conjugate(H_nk)
 
-    dist = G_rel * smp.conjugate(G_rel) + H_rel * smp.conjugate(H_rel)
+    dist = G * smp.conjugate(G) + H * smp.conjugate(H)
 
 
     dist.subs([(n, n_val), (kappa, kappa_val), (Z, Z_val), (alpha, alpha_val)])
@@ -92,7 +95,8 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt
     from atomaton.momentum_space import calc_momentum_distribution_function
 
-    summation = G_rel * smp.conjugate(G_rel) + H_rel * smp.conjugate(H_rel)
+
+    summation = G**2 + H**2
 
     sumsub = summation.subs([(n, 1), (kappa, -1), (Z, 1), (alpha, 0)])
 

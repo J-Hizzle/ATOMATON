@@ -1,5 +1,4 @@
 #%%
-import sympy as smp
 import numpy as np
 import matplotlib.pyplot as plt
 from atomaton.position_space import calc_r_k_expval
@@ -26,13 +25,13 @@ preliminaries
 =============
 '''
 # define array over principal quantum numbers and set all other parameters constant
-n_vals = np.arange(1, 20, 1, dtype=int)
+n_vals = np.arange(1, 10, 1, dtype=int)
 l_vals = np.arange(0, 4, dtype=int)
 Z_val = 1
 k_vals = np.arange(-2, 5, 1, dtype=int)
 
 # specify names and save path
-figname = 'r_exp_vals_Z{}'.format(Z_val)
+figname = 'r_exp_vals_Z{}_nocap'.format(Z_val)
 figtitle = r'Radial expectation values $\langle r^k \rangle$ vs. principal quantum numbers for $Z = {}$'.format(Z_val)
 savedir = '../data/' + figname
 # %%
@@ -66,7 +65,7 @@ l_index = 0
 
 # create array of axes in one figure
 fig, ax = plt.subplots(row_number, col_number, figsize=(12, 12), constrained_layout=True, gridspec_kw={'width_ratios': [1, 1]})
-fig.suptitle(figtitle, fontsize=22)
+#fig.suptitle(figtitle, fontsize=22)
 
 # loop over subplots in figure and fill them with data 
 for row_index in range(0, row_number):
@@ -78,14 +77,14 @@ for row_index in range(0, row_number):
         plt.sca(ax[row_index, col_index])
 
         # manage labeling only the left-most y axes and the bottom-most x axes
-        if col_index == 0:
-            plt.ylabel(r'$\langle r^k \rangle \hspace{5mm} (a.u.)$')
+        #if col_index == 0:
+        #    plt.ylabel(r'$\langle r^k \rangle \hspace{5mm} (a.u.)$')
             #plt.xlim(0, 4)
         #elif col_index == col_number - 1:
             #plt.xlim(0, 2)
 
-        if row_index == row_number - 1:
-            plt.xlabel('$n$')
+        #if row_index == row_number - 1:
+        #    plt.xlabel('$n$')
 
         # plot expectation values against principal quantum numbers
         for jj, k_val in enumerate(k_vals):
@@ -122,6 +121,10 @@ for ax in fig.axes:
 #for ax in fig.axes:
 #    for label in ax.yaxis.get_ticklabels()[::2]:
 #        label.set_visible(False)
+
+# label x and y axes for entire figure
+fig.supylabel(r'$\langle r^k \rangle \hspace{5mm} (a.u.)$', fontsize=25)
+fig.supxlabel('$n$', fontsize=25)
     
 plt.savefig(fname=savedir, dpi = 300)
 plt.show()
