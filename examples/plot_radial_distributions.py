@@ -9,9 +9,9 @@ plt.rcParams['text.usetex'] = True
 plt.rc('axes', titlesize=22, labelsize=22)     # fontsize of the axes title
 # %%
 Z_vals = [1, 80, 137]
-n_vals = [1, 2, 3]
-l_vals = [0, 0, 0]
-kappa_vals = [-1, -1, -1]
+n_vals = [1, 2, 2]
+l_vals = [0, 0, 1]
+kappa_vals = [-1, -1, 1]
 r_grid = np.linspace(0, 30, 50000)
 
 figname = 'comparison_radial_distribution'
@@ -35,17 +35,17 @@ for row_index in range(0, 3):
         #manage labeling with axis interface
         if col_index == 2:
             axis.yaxis.set_label_coords(1.0, .5)
-            axis.set_ylabel('$Z = {0}$'.format(Z_val), rotation=270)
+            axis.set_ylabel('$Z = {0}$'.format(Z_val), rotation=270, fontsize=22)
 
         # pick the indexed axis as the current plot
         plt.sca(axis)
 
         # manage axis labeling
         if row_index == 1 and col_index == 0:
-            plt.ylabel(r'$\rho(p)$', fontsize=25)
+            plt.ylabel(r'$\rho(r)$', fontsize=25)
 
         if row_index == 2 and col_index == 1:
-            plt.xlabel('$p \hspace{5 mm} (a.u.)$', fontsize=25)
+            plt.xlabel('$r \hspace{5 mm} (a.u.)$', fontsize=25)
 
 
         if row_index == 0:
@@ -60,12 +60,15 @@ for row_index in range(0, 3):
         print(type(dist_rel))
 
         # rescale axes
-        p_grid_rescaled, dist_nr_rescaled, rescale_index = rescale_axes(r_grid, dist_nr, isovalue=0.999)
+        r_grid_rescaled, dist_nr_rescaled, rescale_index = rescale_axes(r_grid, dist_nr, isovalue=0.999)
 
         dist_rel_rescaled = dist_rel[:rescale_index]
 
-        plt.plot(p_grid_rescaled, dist_nr_rescaled)
-        plt.plot(p_grid_rescaled, dist_rel_rescaled)
+        plt.plot(r_grid_rescaled, dist_nr_rescaled)
+        plt.plot(r_grid_rescaled, dist_rel_rescaled, linestyle='--')
+
+        plt.yscale('log')
+        plt.ylim([1e-5, 1e+3])
 
 plt.savefig(fname=savedir, dpi = 300)
 # %%
